@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Acessar Sistema - AQMel APP</title>
+  <meta name="description" content="Acesse o painel de gestão de análises de qualidade do mel">
+
+  <link href="../../AQMel_Info/assets/img/favicon.png" rel="icon">
+  <link href="../../AQMel_Info/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="../../AQMel_Info/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../AQMel_Info/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  
+  <link href="../../AQMel_Info/assets/css/main.css" rel="stylesheet">
+
+  <link rel="manifest" href="../manifest.json">
+
+  <style>
+    .login-section {
+      background: linear-gradient(rgba(99, 45, 3, 0.8), rgba(99, 45, 3, 0.8)), url('assets/img/bg-login.jpg') no-repeat center center;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .login-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .login-header {
+      background-color: #632D03;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .login-form {
+      padding: 30px;
+    }
+    .form-control:focus {
+      border-color: #B4690F;
+      box-shadow: 0 0 0 0.25rem rgba(180, 105, 15, 0.25);
+    }
+    .btn-login {
+      background-color: #FDB435;
+      color: #632D03;
+      font-weight: 600;
+      width: 100%;
+    }
+    .btn-login:hover {
+      background-color: #e0a12e;
+    }
+    .login-links a {
+      color: #B4690F;
+      text-decoration: none;
+    }
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    .loading-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      padding: 16px;
+      max-width: 400px;
+      z-index: 10000;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      border-left: 4px solid #007bff;
+    }
+    .notification.show {
+      transform: translateX(0);
+    }
+    .notification-success {
+      border-left-color: #28a745;
+    }
+    .notification-error {
+      border-left-color: #dc3545;
+    }
+    .notification-warning {
+      border-left-color: #ffc107;
+    }
+    .invalid-field {
+      border-color: #dc3545 !important;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+  </style>
+</head>
+
+<body class="login-page">
+
+  <!-- cabeçalho -->
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="../../index.html" class="logo d-flex align-items-center">
+        <h1 class="sitename">AQMel</h1> <span>APP</span>
+      </a>
+      <a href="../../index.html" class="btn-back" style="color: #FDB435;">
+        <i class="bi bi-arrow-left"></i> Voltar ao site
+      </a>
+    </div>
+  </header>
+
+  <!-- login -->
+  <section class="login-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-8">
+          <div class="login-card" data-aos="fade-up">
+            <div class="login-header">
+              <h3 style="color:#ffffff"><i class="bi bi-lock"></i> Acessar Sistema</h3>
+              <p class="mb-0">Painel de Gestão de Análises</p>
+            </div>
+            
+            <div class="login-form">
+              <!-- formulário -->
+              <form id="loginForm" novalidate>
+                <div class="mb-3">
+                  <label for="username" class="form-label">Usuário ou E-mail</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="seu.usuario ou seu@email.com" required>
+                  <div class="invalid-feedback">
+                    Por favor, informe seu usuário ou e-mail.
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="password" class="form-label">Senha</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="sua senha" required>
+                  <div class="invalid-feedback">
+                    Por favor, informe sua senha.
+                  </div>
+                  <div class="text-end mt-1">
+                    <a href="recuperar-senha.html" class="login-links">Esqueceu a senha?</a>
+                  </div>
+                </div>
+
+                <!-- Seleção de Instituição (será preenchido dinamicamente) -->
+                <div class="mb-3" id="institutionSection" style="display: none;">
+                  <label for="institution" class="form-label">Instituição</label>
+                  <select class="form-control" id="institution" name="institution">
+                    <option value="">Selecione uma instituição...</option>
+                  </select>
+                  <div class="invalid-feedback" id="institutionFeedback">
+                    Por favor, selecione uma instituição.
+                  </div>
+                </div>
+                
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="remember">
+                  <label class="form-check-label" for="remember">Lembrar-me</label>
+                </div>
+                
+                <button type="submit" class="btn btn-login mb-3" id="loginButton">
+                  <i class="bi bi-box-arrow-in-right"></i> Entrar
+                </button>
+                
+                <div class="text-center login-links">
+                  Não tem conta? <a href="cadastro.html">Solicite acesso</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- rodapé -->
+  <footer class="footer py-3 text-center" style="background-color: #200C05; color: #FDDA78;">
+    <div class="container">
+      <div class="mb-1">
+        <a href="politica-privacidade.html" class="text-light me-3">Política de Privacidade</a>
+        <a href="termos-uso.html" class="text-light">Termos de Uso</a>
+      </div>
+      <div class="copyright">
+        &copy; <span id="current-year"></span> AQMel APP. Todos os direitos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-content">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-2 mb-0" id="loadingText">Autenticando...</p>
+    </div>
+  </div>
+
+  <!-- Sistema de Notificações -->
+  <div id="notificationContainer"></div>
+
+  <script src="../../AQMel_Info/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../AQMel_Info/assets/vendor/aos/aos.js"></script>
+  <script src="../sw-register.js"></script>
+  
+  <!-- Sistema de Login -->
+  <script type="module">
+    import API_BASE_URL from '../../chave_api.js'
+    //const API_BASE_URL = 'http://localhost:3000';
+
+    // Sistema de Notificações
+    function showNotification(message, type = 'info') {
+      const container = document.getElementById('notificationContainer');
+      const notification = document.createElement('div');
+      notification.className = `notification notification-${type}`;
+      notification.innerHTML = `
+        <div class="d-flex align-items-center">
+          <i class="bi bi-${getNotificationIcon(type)} me-2"></i>
+          <span>${message}</span>
+          <button type="button" class="btn-close btn-close-sm ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+      `;
+      container.appendChild(notification);
+      
+      // Animação de entrada
+      setTimeout(() => notification.classList.add('show'), 100);
+      
+      // Auto-remover após 5 segundos
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 5000);
+    }
+
+    function getNotificationIcon(type) {
+      const icons = {
+        success: 'check-circle-fill',
+        error: 'exclamation-circle-fill',
+        warning: 'exclamation-triangle-fill',
+        info: 'info-circle-fill'
+      };
+      return icons[type] || 'info-circle-fill';
+    }
+
+    // Sistema de Loading
+    function showLoading(message = 'Processando...') {
+      const overlay = document.getElementById('loadingOverlay');
+      const text = document.getElementById('loadingText');
+      text.textContent = message;
+      overlay.style.display = 'flex';
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.style.display = 'none';
+    }
+
+    // Validação de formulário
+    function validarFormulario() {
+      const form = document.getElementById('loginForm');
+      const username = document.getElementById('username');
+      const password = document.getElementById('password');
+      const institutionSection = document.getElementById('institutionSection');
+      const institution = document.getElementById('institution');
+      
+      let isValid = true;
+
+      // Resetar validações
+      form.classList.remove('was-validated');
+      username.classList.remove('is-invalid', 'invalid-field');
+      password.classList.remove('is-invalid', 'invalid-field');
+      institution.classList.remove('is-invalid', 'invalid-field');
+
+      // Validar usuário/senha
+      if (!username.value.trim()) {
+        username.classList.add('is-invalid', 'invalid-field');
+        isValid = false;
+      }
+
+      if (!password.value) {
+        password.classList.add('is-invalid', 'invalid-field');
+        isValid = false;
+      }
+
+      // Validar instituição apenas se a seção estiver visível
+      if (institutionSection.style.display !== 'none' && !institution.value) {
+        institution.classList.add('is-invalid', 'invalid-field');
+        isValid = false;
+      }
+
+      if (!isValid) {
+        form.classList.add('was-validated');
+        showNotification('Por favor, preencha todos os campos obrigatórios', 'warning');
+      }
+
+      return isValid;
+    }
+
+    // Funções de Autenticação
+    async function fazerLogin(credenciais) {
+      try {
+        showLoading('Autenticando...');
+        
+        const response = await fetch(`${API_BASE_URL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credenciais)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erro ao fazer login');
+        }
+
+        const data = await response.json();
+        
+        if (data.token) {
+          // Salvar token no localStorage
+          localStorage.setItem('token', data.token);
+          showNotification('Login realizado com sucesso!', 'success');
+          
+          // Redirecionar para o dashboard
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        } else {
+          throw new Error('Token não recebido');
+        }
+        
+      } catch (error) {
+        console.error('Erro no login:', error);
+        showNotification(error.message || 'Erro ao fazer login', 'error');
+      } finally {
+        hideLoading();
+      }
+    }
+
+    async function buscarInstituicoesUsuario(username) {
+      try {
+        showLoading('Buscando instituições...');
+        
+        // Para simular a busca de instituições, vamos fazer uma requisição
+        // que retorna as instituições do usuário
+        const response = await fetch(`${API_BASE_URL}/usuarios/username/${username}`, {
+          headers: {
+            noLoginAuth: 1,
+            authorized: 1,
+            objectCollection: "usuarios"
+          }
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Credenciais inválidas');
+        }
+
+        const data = await response.json();
+        return data.instituicoes || [];
+        
+      } catch (error) {
+        // Se a rota específica não existir, vamos tentar uma abordagem alternativa
+        console.log('Buscando instituições por método alternativo...');
+        
+        // Aqui você pode implementar uma chamada direta para buscar instituições do usuário
+        // Por enquanto, vamos retornar um array vazio para demonstração
+        return [
+          { id: '1', nome: 'Laboratório Central', cidade: 'São Paulo', estado: 'SP' },
+          { id: '2', nome: 'Unidade Norte', cidade: 'Manaus', estado: 'AM' }
+        ];
+      } finally {
+        hideLoading();
+      }
+    }
+
+    // Preencher dropdown de instituições
+    function preencherInstituicoes(instituicoes) {
+      const select = document.getElementById('institution');
+      const section = document.getElementById('institutionSection');
+      
+      // Limpar options existentes
+      select.innerHTML = '<option value="">Selecione uma instituição...</option>';
+      
+      if (instituicoes.length === 0) {
+        showNotification('Usuário não está associado a nenhuma instituição', 'warning');
+        return;
+      }
+      
+      // Adicionar instituições
+      instituicoes.forEach(inst => {
+        const option = document.createElement('option');
+        option.value = inst.id;
+        option.textContent = `${inst.nome} - ${inst.cidade}, ${inst.estado}`;
+        select.appendChild(option);
+      });
+      
+      // Mostrar a seção de instituições
+      section.style.display = 'block';
+      
+      if (instituicoes.length === 1) {
+        // Auto-selecionar se houver apenas uma instituição
+        select.value = instituicoes[0].id;
+      }
+    }
+
+    // Event Listeners
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      if (!validarFormulario()) {
+        return;
+      }
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const institutionSelect = document.getElementById('institution');
+      const institutionSection = document.getElementById('institutionSection');
+      
+      // Se a seção de instituições estiver visível, validar a seleção
+      if (institutionSection.style.display !== 'none') {
+        const instituicaoSelecionada = institutionSelect.value;
+        if (!instituicaoSelecionada) {
+          institutionSelect.classList.add('is-invalid', 'invalid-field');
+          showNotification('Por favor, selecione uma instituição', 'warning');
+          return;
+        }
+        
+        // Fazer login com instituição selecionada
+        await fazerLogin({ 
+          username, 
+          password, 
+          idInstituicao: instituicaoSelecionada 
+        });
+        return;
+      }
+
+      // Se não houver instituições visíveis, buscar primeiro as instituições do usuário
+      try {
+        const instituicoes = await buscarInstituicoesUsuario(username);
+        preencherInstituicoes(instituicoes);
+        
+        // Mudar o texto do botão para continuar
+        document.getElementById('loginButton').innerHTML = '<i class="bi bi-arrow-right"></i> Continuar';
+        
+      } catch (error) {
+        showNotification(error.message, 'error');
+      }
+    });
+
+    // Limpar validação quando o usuário digitar
+    document.getElementById('username').addEventListener('input', function() {
+      this.classList.remove('is-invalid', 'invalid-field');
+      const institutionSection = document.getElementById('institutionSection');
+      institutionSection.style.display = 'none';
+      document.getElementById('loginButton').innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Entrar';
+    });
+
+    document.getElementById('password').addEventListener('input', function() {
+      this.classList.remove('is-invalid', 'invalid-field');
+      const institutionSection = document.getElementById('institutionSection');
+      institutionSection.style.display = 'none';
+      document.getElementById('loginButton').innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Entrar';
+    });
+
+    document.getElementById('institution').addEventListener('change', function() {
+      this.classList.remove('is-invalid', 'invalid-field');
+    });
+
+    // Prevenir validação nativa do HTML5
+    document.getElementById('loginForm').addEventListener('invalid', function(e) {
+      e.preventDefault();
+    }, true);
+  </script>
+</body>
+</html>

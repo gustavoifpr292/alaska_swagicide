@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Cadastro - AQMel APP</title>
+  <meta name="description" content="Solicite acesso ao painel de gestão de análises de qualidade do mel">
+
+  <link href="../../AQMel_Info/assets/img/favicon.png" rel="icon">
+  <link href="../../AQMel_Info/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="../../AQMel_Info/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../AQMel_Info/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  
+  <link href="../../AQMel_Info/assets/css/main.css" rel="stylesheet">
+
+  <style>
+    /* Estilos consistentes com login.html */
+    .register-section {
+      background: linear-gradient(rgba(99, 45, 3, 0.8), rgba(99, 45, 3, 0.8)), url('assets/img/bg-register.jpg') no-repeat center center;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .register-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .register-header {
+      background-color: #632D03;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .register-form {
+      padding: 30px;
+    }
+    .form-control:focus {
+      border-color: #B4690F;
+      box-shadow: 0 0 0 0.25rem rgba(180, 105, 15, 0.25);
+    }
+    .btn-register {
+      background-color: #FDB435;
+      color: #632D03;
+      font-weight: 600;
+      width: 100%;
+    }
+    .btn-register:hover {
+      background-color: #e0a12e;
+    }
+    .register-links a {
+      color: #B4690F;
+      text-decoration: none;
+    }
+    .register-links a:hover {
+      text-decoration: underline;
+    }
+    .password-strength {
+      height: 5px;
+      background-color: #e9ecef;
+      margin-top: 5px;
+      border-radius: 3px;
+    }
+    .password-strength-bar {
+      height: 100%;
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+
+<body class="register-page">
+
+  <!-- cabeçalho -->
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="../../index.html" class="logo d-flex align-items-center">
+        <h1 class="sitename">AQMel</h1> <span>APP</span>
+      </a>
+      <a href="login.html" class="btn-back" style="color: #FDB435;">
+        <i class="bi bi-arrow-left"></i> Voltar ao login
+      </a>
+    </div>
+  </header>
+
+  <!-- cadastro -->
+  <section class="register-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+          <div class="register-card" data-aos="fade-up">
+            <div class="register-header">
+              <h3 style="color: #ffffff"><i class="bi bi-person-plus"></i> Solicitar Acesso</h3>
+              <p class="mb-0">Preencha os dados para cadastro no sistema</p>
+            </div>
+            
+            <div class="register-form">
+              <!-- formulario -->
+              <form id="registerForm">
+                <div class="row">
+                 <div class="mb-3">
+                   <label for="username" class="form-label">Nome de Usuário*</label>
+                   <input type="username" class="form-control" id="username" name="username" placeholder="Nome de usuário" required>
+                 </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="firstName" class="form-label">Nome*</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lastName" class="form-label">Sobrenome*</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="cpf" class="form-label">CPF</label>
+                  <input type="cpf" class="form-control" id="cpf" name="cpf" placeholder="123.456.789-10">
+                </div>
+
+                <div class="mb-3">
+                  <label for="email" class="form-label">E-mail*</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="exemplo@laboratorio.com" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="institution" class="form-label">Instituição/Laboratório*</label>
+                  <select class="form-control" id="institution" name="institution" required>
+                    <option value=''>Selecione uma instituição</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="userType" class="form-label">Tipo de Usuário*</label>
+                  <select class="form-select" id="userType" name="userType" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    <option value="Coordenador">Coordenador</option>
+                    <option value="Pesquisador">Analista</option>
+                    <option value="Apicultor">Produtor</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Senha*</label>
+                  <input type="password" class="form-control" id="password" name="password" required>
+                  <div class="password-strength mt-2">
+                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="confirmPassword" class="form-label">Confirmar Senha*</label>
+                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                </div>
+				
+                <button type="submit" class="btn btn-register mb-3">
+                  <i class="bi bi-send-check"></i> Enviar Solicitação
+                </button>
+
+                <div class="text-center register-links">
+                  Já tem conta? <a href="login.html">Faça login aqui</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- rodape -->
+  <footer class="footer py-3 text-center" style="background-color: #200C05; color: #FDDA78;">
+    <div class="container">
+      <div class="mb-1">
+        <a href="politica-privacidade.html" class="text-light me-3">Política de Privacidade</a>
+        <a href="termos-uso.html" class="text-light">Termos de Uso</a>
+      </div>
+      <div class="copyright">
+        &copy; <span id="current-year"></span> AQMel APP. Todos os direitos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <div id="loadingOverlay" class="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+  <div class="loading-content" style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p class="mt-2 mb-0" id="loadingText">Processando...</p>
+  </div>
+</div>
+
+<!-- Sistema de Notificações -->
+<div id="notificationContainer" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
+
+<script type="module" src="../assets/scripts/cadastro.js"></script>
+
+  <script src="../../AQMel_Info/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../AQMel_Info/assets/vendor/aos/aos.js"></script>
+  
+</body>
+</html>

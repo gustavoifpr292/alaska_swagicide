@@ -1,0 +1,36 @@
+{
+  "name": "AQMel APP",
+  "short_name": "AQMel",
+  "start_url": "/AQMel_Painel/pages/login.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#632D03",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/img/apple-icon.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/apple-icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/bg-pricing.jpg",
+      "sizes": "1816x710",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}
